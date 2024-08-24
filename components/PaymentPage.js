@@ -1,13 +1,9 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState ,useRef } from "react";
 import Script from "next/script";
-import {
-  initiate,
-  fetchUser,
-  fetchPayments,
-} from "@/get-me-a-chai/actions/useractions";
+import { initiate, fetchUser, fetchPayments } from "@/actions/useractions";
 import { useSession } from "next-auth/react";
-// import Loader from "./Loader";
+import Loader from "./Loader";
 import CoverpicSkeleteon from "./CoverpicSkeleton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,19 +11,16 @@ import { Bounce } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
+
 const PaymentPage = ({ username }) => {
   const { data: session } = useSession();
-  const [paymentform, setPaymentform] = useState({
-    name: "",
-    message: "",
-    amount: "",
-  });
+  const [paymentform, setPaymentform] = useState({name: "" , message: "" , amount: ""});
   const [currentUser, setCurrentUser] = useState({});
   const [payment, setPayment] = useState([]);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const searchRef = useRef();
+  const searchRef = useRef()
 
   useEffect(() => {
     getData();
@@ -43,7 +36,7 @@ const PaymentPage = ({ username }) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
         transition: Bounce,
       });
     }
@@ -98,7 +91,7 @@ const PaymentPage = ({ username }) => {
       <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
 
       {/* ***************************************************************************************************************************************** */}
-      {/* <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -110,8 +103,8 @@ const PaymentPage = ({ username }) => {
         pauseOnHover
         theme="dark"
         transition="Bounce"
-      /> */}
-      {/* {loading && <Loader />} */}
+      />
+      {loading && <Loader />}
       {currentUser.error && (
         <div className="text-center text-4xl my-20 font-extrabold">
           User {username} not found ☹
@@ -125,7 +118,7 @@ const PaymentPage = ({ username }) => {
                 className="object-cover h-40 md:md:h-[21rem] w-full"
                 src={currentUser.coverpicture}
                 alt="coverImage"
-                onError={(e) => (e.target.src = <CoverpicSkeleteon />)}
+               onError={(e) => (e.target.src = <CoverpicSkeleteon/>)}
               />
             ) : (
               <CoverpicSkeleteon />
@@ -152,8 +145,7 @@ const PaymentPage = ({ username }) => {
               let&apos;s Help {username} to get a cup of tea
             </div>
             <div className="text-slate-400">
-              {payment.length} supporters . ₹
-              {payment.reduce((a, b) => a + b.amount, 0)} raised
+            {payment.length} supporters . ₹{payment.reduce((a,b)=>(a+b.amount), 0)} raised 
             </div>
 
             {/* *********************************************************************************** */}
@@ -185,13 +177,7 @@ const PaymentPage = ({ username }) => {
               {/* **********************************************************************************************/}
               <div className="makePayment w-full bg-slate-800/40 rounded-lg backdrop-blur-sm p-10">
                 <h2 className="text-xl font-bold mb-5">Make a payment</h2>
-                <form
-                  action={() => {
-                    searchRef.current.reset();
-                  }}
-                  ref={searchRef}
-                  className="flex flex-col gap-3"
-                >
+                <form action={()=>{searchRef.current.reset()}} ref={searchRef} className="flex flex-col gap-3">
                   <input
                     type="text"
                     placeholder="Name"

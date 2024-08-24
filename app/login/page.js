@@ -1,21 +1,29 @@
 "use client"
-import React from "react";
+import React, { useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation";
+
 const Login = () => {
-    const { data: session } = useSession();
+  const { data: session } = useSession();
+  const router = useRouter();
+  
+  useEffect(()=>{
+    document.title = `Login | Get Me A Chai`
     if(session) {
-        const router = useRouter()
-        router.push("/dashboard")
-          }
+      router.push("/profile");
+    }
+  },[router, session])
+
   return (
-    <div className="text-white py-14 container mx-auto">
-      <h1 className="font-bold text-3xl text-center">
-        Login to Get your fans to support you
+    <div className="text-white py-14 container mx-auto ">
+      <h1 className="font-bold text-2xl md:text-3xl text-center">
+        Login/Signup To Get Started
       </h1>
 
-      <div className="flex flex-col gap-2 min-h-screen items-center  p-10">
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+      <div className="flex flex-col gap-2 md:min-h-screen items-center p-10">
+        <button className="flex items-center w-64 bg-gray-50 text-blackbg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        onClick={() => {signIn("google")}}
+        >
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -26,9 +34,9 @@ const Login = () => {
             <g
               id="Icons"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g id="Color-" transform="translate(-401.000000, -860.000000)">
                 <g id="Google" transform="translate(401.000000, 860.000000)">
@@ -67,7 +75,7 @@ const Login = () => {
           <span>Continue with Google</span>
         </button>
 
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button className="flex items-center w-64 bg-gray-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-300/80" disabled>
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -78,9 +86,9 @@ const Login = () => {
             <g
               id="Icons"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g
                 id="Color-"
@@ -97,7 +105,7 @@ const Login = () => {
           <span>Continue with LinkedIn</span>
         </button>
 
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button className="flex items-center w-64 bg-gray-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-300/80" disabled>
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -108,9 +116,9 @@ const Login = () => {
             <g
               id="Icons"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g
                 id="Color-"
@@ -128,7 +136,7 @@ const Login = () => {
           <span>Continue with Twitter</span>
         </button>
 
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button className="flex items-center w-64 bg-gray-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-300/80" disabled>
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -139,9 +147,9 @@ const Login = () => {
             <g
               id="Icons"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g
                 id="Color-"
@@ -159,7 +167,9 @@ const Login = () => {
           <span>Continue with Facebook</span>
         </button>
 
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" onClick={()=>{signIn("github")}}>
+        <button className="flex items-center w-64 bg-gray-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        onClick={() => {signIn("github")}}
+        >
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -170,19 +180,19 @@ const Login = () => {
             <g
               id="team-collaboration/version-control/github"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g
                 id="container"
                 transform="translate(2.000000, 2.000000)"
-                fill-rule="nonzero"
+                fillRule="nonzero"
               >
                 <rect
                   id="mask"
                   stroke="#000000"
-                  stroke-width="2"
+                  strokeWidth="2"
                   fill="#000000"
                   x="-1"
                   y="-1"
@@ -202,7 +212,7 @@ const Login = () => {
           <span>Continue with Github</span>
         </button>
 
-        <button className="flex items-center w-64 bg-slate-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium  hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button className="flex items-center w-64 bg-gray-50 text-black border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-300/80" disabled>
           <svg
             className="h-6 w-6 mr-2"
             xmlns="http://www.w3.org/2000/svg"
@@ -213,9 +223,9 @@ const Login = () => {
             <g
               id="Page-1"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <g
                 id="Dribbble-Light-Preview"

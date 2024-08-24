@@ -1,19 +1,16 @@
 "use server";
 
 import Razorpay from "razorpay";
-import Payment from "@/get-me-a-chai/models/Payment.model";
-import connectDB from "@/get-me-a-chai/db/connectDb";
-import User from "@/get-me-a-chai/models/User";
+import Payment from "@/models/Payment.model";
+import connectDB from "@/db/connectDb";
+import User from "@/models/User";
 
 export const initiate = async (amount, to_username, paymentform) => {
   await connectDB();
   const user = await User.findOne({ username: to_username });
   const secret = user?.razorpaySecret;
   const id = user?.razorpayid;
-  var instance = new Razorpay({
-    key_id: process.env.KEY_ID,
-    key_secret: secret,
-  });
+  var instance = new Razorpay({ key_id: id, key_secret: secret });
 
   const options = {
     amount: Number.parseInt(amount),
@@ -41,7 +38,7 @@ export const fetchUser = async (username) => {
     let user = u.toObject({ flatternObjectIds: true });
     return JSON.stringify(user);
   }
-  // return JSON.stringify({ error: "User not found" });
+  return JSON.stringify({ error: "User not found" });
 };
 
 export const fetchPayments = async (username) => {
@@ -54,9 +51,11 @@ export const fetchPayments = async (username) => {
   return JSON.stringify(p);
 };
 
+
+
 export const updateProfile = async (data, oldUsername) => {
   await connectDB();
-  const oldEmail = await User.findOne({ username: oldUsername });
+  const oldEmail = await User.findOne({ username : oldUsername });
 
   let newData = Object.fromEntries(data);
 
@@ -64,27 +63,28 @@ export const updateProfile = async (data, oldUsername) => {
     let u = await User.findOne({
       username: newData.username,
     });
-
+    
     if (u) {
       return JSON.stringify({
         message: "Username already exists",
       });
     }
 
-    // **************************************************************
+
+// **************************************************************
     /* This block of code is updating a user's profile information in the database. Here's a breakdown
     of what it does: */
     let updatedProfile = await User.findOneAndUpdate(
-      { email: oldEmail.email },
-      { ...newData, email: oldEmail.email },
-      { new: true }
+        { email: oldEmail.email },
+        { ...newData, email: oldEmail.email },
+        { new: true }
     );
 
     if (updatedProfile) {
       await Payment.updateMany(
         { to_user: oldUsername },
         { to_user: newData.username },
-        { new: true }
+        { new: true}
       );
     }
     return JSON.stringify({
@@ -93,7 +93,7 @@ export const updateProfile = async (data, oldUsername) => {
     });
   }
 
-  // *********************************************************************
+// *********************************************************************
   /* This block of code is updating a user's profile information in the database. Here's a breakdown of
   what it does: */
   let updatedProfile = await User.findOneAndUpdate(

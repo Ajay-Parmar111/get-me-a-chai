@@ -1,26 +1,28 @@
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth'
 // import AppleProvider from 'next-auth/providers/apple'
 // import FacebookProvider from 'next-auth/providers/facebook'
 // import GoogleProvider from 'next-auth/providers/google'
 // import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import mongoose from "mongoose";
-import User from "@/get-me-a-chai/models/User";
-import Payment from "@/get-me-a-chai/models/Payment.model";
-import connectDB from "@/get-me-a-chai/db/connectDb";
+import mongoose from 'mongoose';
+import User from '@/models/User';
+import Payment from '@/models/Payment.model';
+import connectDB from '@/db/connectDb';
 
-export const authoptions = NextAuth({
+
+
+export const authoptions =  NextAuth({
   providers: [
     // OAuth authentication providers...
     GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+        clientId: process.env.GITHUB_ID,
+        clientSecret: process.env.GITHUB_SECRET
+      }),
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      })
     // AppleProvider({
     //   clientId: process.env.APPLE_ID,
     //   clientSecret: process.env.APPLE_SECRET
@@ -41,41 +43,43 @@ export const authoptions = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      await connectDB();
-      if (account.provider == "github") {
+      await connectDB()
+      if(account.provider == 'github'){
+
         // connect to database
-        const currentUser = await User.findOne({ email: user.email });
+        const currentUser = await User.findOne({email: user.email})
 
-        if (!currentUser) {
+        if(!currentUser){
           const newUser = await User.create({
-            email: user.email,
-            username: user.email.split("@")[0],
-            name: user.name,
-          });
+          email: user.email,
+            username: user.email.split('@')[0],  
+            name: user.name    
+          })
         }
-
-        return true;
+     
+        return true
       }
       if (account.provider === "google") {
-        const currentUser = await User.findOne({ email: user.email });
+        const currentUser = await User.findOne({email: user.email})
 
-        if (!currentUser) {
+        if(!currentUser){
           const newUser = await User.create({
-            email: user.email,
-            username: user.email.split("@")[0],
-            name: user.name,
-          });
+          email: user.email,
+            username: user.email.split('@')[0], 
+            name: user.name     
+          })
         }
-        return profile.email_verified && profile.email.endsWith("@gmail.com");
+        return profile.email_verified && profile.email.endsWith("@gmail.com")
       }
-      return true; // Do different verification for other providers that don't have `email_verified`
-    },
-    async session({ session, user, token }) {
-      const dbUser = await User.findOne({ email: session.user.email });
-      session.user.name = dbUser.username;
-      return session;
-    },
+      return true // Do different verification for other providers that don't have `email_verified`
+    
   },
-});
+  async session({ session, user, token }) {
+    const dbUser = await User.findOne({email: session.user.email})
+    session.user.name = dbUser.username
+    return session
+  },
+}
+})
 
-export { authoptions as GET, authoptions as POST };
+export { authoptions as GET , authoptions as POST}

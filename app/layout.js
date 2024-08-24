@@ -1,26 +1,29 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/get-me-a-chai/components/Navbar";
-import Footer from "@/get-me-a-chai/components/Footer";
-import SessionWrapper from "@/get-me-a-chai/components/SessionWrapper";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Get me A Chai - Fund your projects with chai",
-  description: "This website is a crowdfunding platform for creators.",
+  title: "Get Me A Chai | Fund Your Project with chai",
+  description: "a crowdfunding platform for creaters",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] text-white">
+      <body>
         <SessionWrapper>
-          <Navbar />
-          <div className="min-h-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] text-white">
-            {children}
+          <div className="relative z-10 min-h-screen w-full bg-black  ">
+            <div className=" z-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+              <div className="absolute -z-10 left-10 right-0 top-[-10%] md:h-[700px] md:w-[700px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div>
+              <Navbar />
+              <div className="text-white min-h-screen relative">{children}</div>
+              <Footer />
+            </div>
           </div>
-          <Footer />
         </SessionWrapper>
       </body>
     </html>

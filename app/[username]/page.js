@@ -1,14 +1,14 @@
-import PaymentPage from "@/get-me-a-chai/components/PaymentPage";
+import PaymentPage from "@/components/PaymentPage";
 import { Suspense } from "react";
-// import Loader from "@/components/Loader";
+import Loader from "@/components/Loader";
 import React from "react";
 
 const Username = ({ params }) => {
   return (
     <>
-      {/* <Suspense fallback={<Loader/>}> */}
-      <PaymentPage username={params.username} />
-      {/* </Suspense> */}
+    <Suspense fallback={<Loader/>}>
+      <PaymentPage username={params.username}/>
+    </Suspense>
     </>
   );
 };
